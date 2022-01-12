@@ -58,12 +58,21 @@ public class PizzaController {
 
 	@GetMapping("/create")
 	public String create(Model model) {
+		model.addAttribute("edit", false);
 		model.addAttribute("pizza", new Pizza());
+		model.addAttribute("ingredientList", ingredientService.findAllSortByName());
 		return "/pizzas/edit";
 	}
 
 	@PostMapping("/create")
-	public String doCreate(@ModelAttribute("book") Pizza formPizza, Model model) {
+	public String doCreate(@Valid @ModelAttribute("book") Pizza formPizza, BindingResult bindingResult, Model model) {
+		// Return to form
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("edit", false);
+			model.addAttribute("ingredientList", ingredientService.findAllSortByName());
+			return "/pizzas/edit";
+		}
+		// Save data and return to list
 		service.create(formPizza);
 		return "redirect:/pizzas";
 	}
@@ -71,8 +80,8 @@ public class PizzaController {
 	@GetMapping("/edit/{id}")
 	public String edit(@PathVariable("id") Integer id, Model model) {
 		model.addAttribute("edit", true);
-		model.addAttribute("book", service.getById(id));
-		model.addAttribute("ingredientList", ingredientService.findAllSortByCategory());
+		model.addAttribute("pizza", service.getById(id));
+		model.addAttribute("ingredientList", ingredientService.findAllSortByName());
 		return "/pizzas/edit";
 	}
 
@@ -81,11 +90,11 @@ public class PizzaController {
 			RedirectAttributes redirectAttributes) {
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("edit", true);
-			model.addAttribute("ingredientList", ingredientService.findAllSortByCategory());
+			model.addAttribute("ingredientList", ingredientService.findAllSortByName());
 			return "/pizzas/edit";
 		}
 		service.update(formPizza);
-		redirectAttributes.addFlashAttribute("successMessage", "Book edited!");
+		redirectAttributes.addFlashAttribute("successMessage", "Pizza edited!");
 		return "redirect:/pizzas";
 	}
 
@@ -95,7 +104,7 @@ public class PizzaController {
 			// Return error message
 		}
 		service.deleteById(id);
-		redirectAttributes.addFlashAttribute("successMessage", "Book deleted!");
+		redirectAttributes.addFlashAttribute("successMessage", "Pizza deleted!");
 		return "redirect:/pizzas";
 	}
 

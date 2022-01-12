@@ -33,7 +33,6 @@
 					<th>Name</th>
 					<th>Description</th>
 					<th>Price</th>
-					<th>Ingrediants</th>
 					<th>Links</th>
 				</tr>
 			</thead>
@@ -42,11 +41,6 @@
 					<td th:text="${item.name}"></td>
 					<td th:text="${item.description}"></td>
 					<td th:text="${item.price}"></td>
-					<td>
-						<span th:each="ingredient : ${item.ingrediants}">
-							<span th:text="${ingredient.name}">*</span>
-						</span>
-					</td>
 					<td>
 						<a class="btn btn-primary" th:href="@{|/pizzas/detail/${item.id}|}"><i
 								class="fas fa-book"></i></a>

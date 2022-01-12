@@ -22,8 +22,8 @@ public class IngredientService {
 	@Autowired
 	private IngredientRepository rep;
 
-	public List<Ingredient> findAllSortByCategory() {
-		return rep.findAll(Sort.by("ingredient"));
+	public List<Ingredient> findAllSortByName() {
+		return rep.findAll(Sort.by("name"));
 	}
 
 }

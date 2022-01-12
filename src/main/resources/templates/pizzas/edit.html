@@ -3,7 +3,7 @@
 
 <head>
 	<div th:replace="fragments/resources :: headTags"></div>
-	<title>Edit Book</title>
+	<title>Edit pizza</title>
 </head>
 
 <body>
@@ -11,22 +11,47 @@
 	<div class="container text-center">
 		<h1>Pizza</h1>
 		<hr />
-		<form id="pizza-form" th:object="${pizza}" th:action="@{/pizzas/create}" method="post">
+		<form id="pizza-form" th:object="${pizza}"
+			th:action="${edit} ? @{/pizzas/edit/{id}(id=${pizza.id})} : @{/pizzas/create}" method="post">
+			<ul>
+				<li th:each="err : ${#fields.allErrors()}" th:text="${err}" class="text-danger"></li>
+			</ul>
 			<div class="row gy-2">
 				<div class="col-12">
-					<label class="form-label" for="title">Name</label>
-					<input type="text" class="form-control" id="name" th:field="*{name}">
+					<label class="form-label" for="name">Name</label>
+					<input type="text" class="form-control" id="name" th:field="*{name}" th:errorClass="is-invalid">
+					<div th:if="${#fields.hasErrors('name')}" class="invalid-feedback">
+						<ul>
+							<li th:each="err : ${#fields.errors('name')}" th:text="${err}"></li>
+						</ul>
+					</div>
 				</div>
 				<div class="col-4">
 					<label class="form-label" for="price">Price</label>
-					<input type="number" class="form-control" id="price" th:field="*{price}">
+					<input type="number" class="form-control" id="price" th:field="*{price}" th:errorClass="is-invalid">
+					<div th:if="${#fields.hasErrors('price')}" class="invalid-feedback">
+						<ul>
+							<li th:each="err : ${#fields.errors('price')}" th:text="${err}"></li>
+						</ul>
+					</div>
 				</div>
 				<div class="col-8">
 					<label class="form-label" for="description">Description</label>
 					<textarea class="form-control" id="description" th:field="*{description}" rows="6"></textarea>
 				</div>
 				<div class="col-12">
-					<button class="btn btn-primary" type="submit">Save</button>
+					<button class="btn btn-primary fas fa-check" type="submit">Save</button>
+					<a class="btn btn-primary" th:href="@{/pizzas}"><i class="fas fa-times"></i>Cancel</a>
+				</div>
+
+				<!-- Ingrediants -->
+				<div class="col-4">
+					<h4>Ingrediants</h4>
+					<div class="form-check" th:each="ing : ${ingredientList}">
+						<input class="form-check-input" type="checkbox" th:id="|ingredient_${ing.id}|"
+							th:value="${ing.id}" th:field="*{ingrediants}">
+						<label class="form-check-label" th:for="|ingredient_${ing.id}|" th:text="${ing.name}"></label>
+					</div>
 				</div>
 			</div>
 		</form>

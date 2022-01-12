@@ -29,11 +29,9 @@
 					<td th:text="${item.description}"></td>
 					<td th:text="${item.price}"></td>
 					<td>
-						<table class="table">
-							<tr th:each="ingredient : ${item.ingrediants}">
-								<td th:text="${ingredient.name}"></td>
-							</tr>
-						</table>
+						<span th:each="ingredient : ${item.ingrediants}">
+							<span th:text="${ingredient.name}">*</span>
+						</span>
 					</td>
 				</tr>
 			</tbody>

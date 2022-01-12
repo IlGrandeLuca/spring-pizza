@@ -3,6 +3,7 @@
  */
 package org.generation.italy.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.generation.italy.model.Pizza;
@@ -26,7 +27,21 @@ public class PizzaService {
 		return rep.findAll(Sort.by("price"));
 	}
 	
-	public Pizza save(Pizza pizza) {
+	public List<Pizza> findByKeywordSortedByPrice(String keyword){
+		return rep.findByNameContainingIgnoreCaseOrderByPrice(keyword);
+	}
+	
+	public Pizza getById(Integer id) {
+		return rep.getById(id);
+	}
+	
+	public Pizza create(Pizza pizza) {
+		return rep.save(pizza);
+	}
+	
+	public Pizza update(Pizza pizza) {
+		BigDecimal price = rep.getById(pizza.getId()).getPrice();
+		pizza.setPrice(price);
 		return rep.save(pizza);
 	}
 

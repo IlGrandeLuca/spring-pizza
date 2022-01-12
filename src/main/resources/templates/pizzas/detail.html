@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<div th:replace="fragments/resources :: headTags"></div>
+	<title th:text="${pizza.name}"></title>
+</head>
+
+<body>
+	<nav th:replace="fragments/navbar :: navbar('pizzas')"></nav>
+	<div class="container" th:object="${pizza}">
+		<h1 th:text="*{name}"></h1>
+		<h2 th:text="|Pizza ID *{id}|" class="text-muted"></h2>
+		<hr />
+		<div class="row">
+			<div class="col-8">
+				<dl>
+					<dt>Name</dt>
+					<dd th:text="*{name}"></dd>
+					<dt>Price</dt>
+					<dd th:text="*{price}"></dd>
+					<th:block th:unless=${#strings.isEmpty(pizza.description)}>
+						<dt>Description</dt>
+						<dd th:text="*{description}"></dd>
+					</th:block>
+				</dl>
+			</div>
+			<div class="col-4">
+				<h3>Ingrediants</h3>
+				<ul>
+					<li th:each="ing : *{ingrediants}" th:text="${ing.ingredient}"></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div th:replace="fragments/resources :: scripts"></div>
+</body>
+
+</html>
